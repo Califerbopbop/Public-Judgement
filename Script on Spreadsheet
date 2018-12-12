@@ -1,0 +1,17 @@
+function newFormSubmit() {
+  var ss = SpreadsheetApp.openById('10gL1F-4lSUU-vzs3M1uVHGY9qHYgD_B073ykywAtYmk');
+  var leaderboard = ss.getSheetByName('LeaderBoard');
+  var formTitle = FormApp.getActiveForm().getTitle();
+  newSheetName = ss.getSheetByName(formTitle);
+  var averageScores = [
+    ["=AVERAGE(" + newSheetName + "!B:B)", "=AVERAGE(" + newSheetName + "!C:C)", "=AVERAGE(" + newSheetName + "!D:D)", "=AVERAGE(" + newSheetName + "!E:E)", "=AVERAGE(" + newSheetName + "!F:F)", "=AVERAGE(" + newSheetName + "!G:G)", "=AVERAGE(" + newSheetName + "!H:H)", "=AVERAGE(" + newSheetName + "!I:I)", "=AVERAGE(" + newSheetName + "!J:J)"]
+];
+  var cell = leaderboard.getRange("B2:J2");
+  Logger.log(cell);
+  cell.setFormulas(averageScores);
+  name = leaderboard.getRange("A2:A2");
+  name.setValue(newSheetName);
+  Logger.log("=AVERAGE(" + newSheetName + "!B:B)");
+  Logger.log(ss.getSheets()[0].getSheetName());
+  Logger.log(averageScores);
+}
