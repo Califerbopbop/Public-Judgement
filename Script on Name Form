@@ -1,0 +1,39 @@
+var form = FormApp.openById('1_lze_3q17arpdHeUaf2C8_aG4odAPbODs8AZUcf1ss8');
+var newSheetName;
+var newForm;
+var activeSpreadsheet;
+var newFormId;
+//ScriptApp.newTrigger('nameSubmit').forForm(form).onFormSubmit().create();
+function nameSubmit() {
+  var ss = SpreadsheetApp.openById('10gL1F-4lSUU-vzs3M1uVHGY9qHYgD_B073ykywAtYmk');
+  var fr = ss.getSheetByName("Form Responses 1");
+  //get response from name form
+  var lastRowValues = fr.getRange(fr.getLastRow(), 1, 1, fr.getLastColumn()).getValues(); 
+  newSheetName = lastRowValues[0][1];
+  activeSpreadsheet = SpreadsheetApp.openById('10gL1F-4lSUU-vzs3M1uVHGY9qHYgD_B073ykywAtYmk');
+  
+  Logger.log(newSheetName); //log the response to keep track of URLs
+  
+  newForm = FormApp.create(newSheetName); //create new form with the name of the response
+  //set the questions to be answered
+  newForm.addScaleItem().setTitle('Gay').setBounds(1, 10); 
+  newForm.addScaleItem().setTitle('Gamer').setBounds(1, 10);
+  newForm.addScaleItem().setTitle('Hick').setBounds(1, 10);
+  newForm.addScaleItem().setTitle('Drugs').setBounds(1, 10);
+  newForm.addScaleItem().setTitle('Smart').setBounds(1, 10);
+  newForm.addScaleItem().setTitle('Art Kid').setBounds(1, 10);
+  newForm.addScaleItem().setTitle('Stench').setBounds(1, 10);
+  newForm.addScaleItem().setTitle('Retardation').setBounds(1, 10);
+  newForm.addScaleItem().setTitle('Hotness').setBounds(1, 10);
+  
+  var newFormDestination = newForm.setDestination(FormApp.DestinationType.SPREADSHEET, activeSpreadsheet.getId()); //set destination of the new form to the spreadsheet, it creates a new sheet
+  activeSpreadsheet.insertSheet(); //seems like a bug that causes getSheets()[0] to retrieve index 1 not 0, this fixes it
+  activeSpreadsheet.getSheets()[0].setName(newSheetName);
+  activeSpreadsheet.getActiveSheet().hideSheet(); //cleans up the sheet created because I'm not sure how to delete sheets
+  Logger.log(newForm.getPublishedUrl());
+  Logger.log(newForm.getEditUrl());
+  var formUrl = activeSpreadsheet.getSheets()[0].getFormUrl();
+  var formUrlCell = activeSpreadsheet.getSheets()[0].getRange("K1:K1");
+  formUrlCell.setValue(""+formUrl);
+
+}
